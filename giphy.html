@@ -52,9 +52,10 @@
 
 		function doGiphySearch(searchTerm) {
 
+			let timer;
+
 			// this makes the code/function 'blocking'. Do nothing if a giphy is currently playing.
 			// twitchChatCommand will be ignored if a giphy is currently playing.
-			// Comment this line if you do not care 
 			if ($('#giphy_div').hasClass('active')) return;
 
 			// generate a randmon number between 0 and the giphyLimit
@@ -70,9 +71,7 @@
 			$('#giphy_div').css('background-image', 'url(' + giphyApiResponse.data[parseInt(rndNum)].images.original.url + ')');
 			$('#giphy_div').addClass('active');
 
-			clearTimeout();
-
-			setTimeout(function () {
+			timer = setTimeout(function () {
 
 				$('#giphy_div').removeClass('active');
 
