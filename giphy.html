@@ -44,7 +44,7 @@
 		let giphyRating = "r";
 		let giphyLang = "en";
 		let giphyLimit = 25;
-		let timeOut = 60;
+		let timeOut = 10;
 
 		if (!defaultImage) {
 			defaultImage = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
@@ -58,7 +58,10 @@
 
 			// this makes the code/function 'blocking'. Do nothing if a giphy is currently playing.
 			// twitchChatCommand will be ignored if a giphy is currently playing.
-			if ($('#giphy_div').hasClass('active')) return;
+			// Set timeOut = 0 to play the last gif until another gif is played.
+			if (timeOut > 0) {
+				if ($('#giphy_div').hasClass('active')) return;
+			}
 
 			// generate a randmon number between 0 and the giphyLimit
 			let rndNum = Math.random() * giphyLimit;
@@ -73,19 +76,24 @@
 			$('#giphy_div').css('background-image', 'url(' + giphyApiResponse.data[parseInt(rndNum)].images.original.url + ')');
 			$('#giphy_div').addClass('active');
 
-			timer = setTimeout(function () {
+			if (timeOut > 0) {
 
-				$('#giphy_div').removeClass('active');
+				timer = setTimeout(function () {
 
-				// go back to defaultImage when giphy is done playing
-				$('#giphy_div').css('background-image', 'url(' + defaultImage + ')');
+					$('#giphy_div').removeClass('active');
 
-				clearTimeout(timer);
+					// go back to defaultImage when giphy is done playing
+					$('#giphy_div').css('background-image', 'url(' + defaultImage + ')');
 
-			}, timeOut * 1000);
+					clearTimeout(timer);
+
+				}, timeOut * 1000);
+
+			}
 
 			return true;
 		}
+
 
 		// TMIjs Twitch chat connection
 		const client = new tmi.Client({
