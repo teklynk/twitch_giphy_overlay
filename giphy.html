@@ -8,8 +8,8 @@
 		/* if using as a OBS browser source, set background: transparent; */
 		body {
 			/*background-color: black;*/
-			background: radial-gradient(circle, rgba(0,222,229,1) 0%, rgba(106,0,176,1) 100%);
-			/*background-color: black;*/
+			/*background: radial-gradient(circle, rgba(0,222,229,1) 0%, rgba(106,0,176,1) 100%);*/
+			background-color: transparent;
 			background-size: contain;
 			background-position: center;
 			background-repeat: no-repeat;
@@ -33,9 +33,7 @@
 
 <body>
 
-	<div id="giphy_div"
-		style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');">
-	</div>
+	<div id="giphy_div"></div>
 
 	<script>
 		// Configuration - Settings
@@ -47,6 +45,10 @@
 		let giphyLang = "en";
 		let giphyLimit = 25;
 		let timeOut = 60;
+
+		if (!defaultImage) {
+			defaultImage = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+		}
 
 		$('#giphy_div').css('background-image', 'url(' + defaultImage + ')');
 
@@ -77,6 +79,8 @@
 
 				// go back to defaultImage when giphy is done playing
 				$('#giphy_div').css('background-image', 'url(' + defaultImage + ')');
+
+				clearTimeout(timer);
 
 			}, timeOut * 1000);
 
