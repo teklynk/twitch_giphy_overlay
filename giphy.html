@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<title>Twitch Giphy Bot</title>
+<head>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+	<script src="https://github.com/tmijs/tmi.js/releases/download/v1.8.5/tmi.min.js"></script>
+	<style>
+		/* if using as a OBS browser source, set background: transparent; */
+		body {
+			/*background-color: black;*/
+			background: radial-gradient(circle, rgba(0,222,229,1) 0%, rgba(106,0,176,1) 100%);
+			/*background-color: black;*/
+			background-size: contain;
+			background-position: center;
+			background-repeat: no-repeat;
+			overflow: hidden;
+			margin: 0;
+			padding: 0;
+		}
+
+		#giphy_div {
+			background-size: contain;
+			background-position: center;
+			background-repeat: no-repeat;
+			overflow: hidden;
+			margin: 0;
+			padding: 0;
+			width: 100vw;
+			height: 100vh;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="giphy_div"
+		style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');">
+	</div>
+
+	<script>
+		// Configuration - Settings
+		let twitchChannel = "MrCoolStreamer";
+		let twitchChatCommand = "!giphy";
+		let defaultImage = "";
+		let giphyApiKey = "api_key_goes_here";
+		let giphyRating = "r";
+		let giphyLang = "en";
+		let giphyLimit = 25;
+		let timeOut = 60;
+
+		$('#giphy_div').css('background-image', 'url(' + defaultImage + ')');
+
+		function doGiphySearch(searchTerm) {
+
+			// this makes the code/function 'blocking'. Do nothing if a giphy is currently playing.
+			// twitchChatCommand will be ignored if a giphy is currently playing.
+			// Comment this line if you do not care 
+			if ($('#giphy_div').hasClass('active')) return;
+
+			// generate a randmon number between 0 and the giphyLimit
+			let rndNum = Math.random() * giphyLimit;
+
+			// Giphy API search query
+			let giphyApiResponse = JSON.parse($.getJSON({
+				'url': "https://api.giphy.com/v1/gifs/search?api_key=" + giphyApiKey + "&q=" + encodeURIComponent(searchTerm) + "&limit=" + giphyLimit + "&offset=0&rating=" + giphyRating + "&lang=" + giphyLang,
+				'async': false
+			}).responseText);
+
+			// replace image source with a random giphy image
+			$('#giphy_div').css('background-image', 'url(' + giphyApiResponse.data[parseInt(rndNum)].images.original.url + ')');
+			$('#giphy_div').addClass('active');
+
+			clearTimeout();
+
+			setTimeout(function () {
+
+				$('#giphy_div').removeClass('active');
+
+				// go back to defaultImage when giphy is done playing
+				$('#giphy_div').css('background-image', 'url(' + defaultImage + ')');
+
+			}, timeOut * 1000);
+
+			return true;
+		}
+
+		// TMIjs Twitch chat connection
+		const client = new tmi.Client({
+			channels: [twitchChannel]
+		});
+
+		client.connect().catch(console.error);
+
+		// triggers on message
+		client.on('chat', (channel, user, message, self) => {
+
+			// do nothing if message does not start with twitchChatCommand
+			if (self || !message.startsWith(twitchChatCommand)) return;
+
+			// grabs the first word from the message
+			let commandOption = message.split(' ')[0];
+			// grabs all words/text that comes after the commandOption
+			let commandSearchTerm = message.slice(message.indexOf(twitchChatCommand) + twitchChatCommand.length);
+			// Compares checks if first word equals twitchChatCommand and that it has words/text following it.
+			if (commandOption.trim() === twitchChatCommand && commandSearchTerm > '') {
+				// All conditons met, now do the giphy function
+				doGiphySearch(commandSearchTerm.trim());
+			}
+
+		});   
+	</script>
+
+</body>
+
+</html>
