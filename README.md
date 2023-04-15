@@ -46,7 +46,7 @@ let timeOut = 10;
 
 **giphyLimit:** The number of images to randomly pick from. Max is 25 images.
 
-**timeOut:** How long should the image stay on screen.
+**timeOut:** How long should the image stay on screen. Set this to 0 if you want to image to stay on screen until another image is played.
 
 Once everything is configured and saved, you can now open giphy.html in your default web browser to test. 
 
