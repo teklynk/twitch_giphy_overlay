@@ -4,9 +4,9 @@ This will allow Twitch chat to use a custom command like: "!giphy cats". It will
 
 ## Requirements and notes
 
-This can run locally and does not require a server. 
+This project can run locally and does not require a server. Simply open giphy.html in a web browser. 
 
-This does require a Giphy Account and Giphy API key.
+This requires a Giphy Account and Giphy API key.
 
 - Head over to: https://developers.giphy.com/dashboard/ 
 - Create a GIPHY API Key by clicking “Create an App” on the Developer Dashboard (you need to create an account first).
@@ -23,15 +23,15 @@ You should now have a API Key that can be used with this project.
 - Open giphy.html in a text editor like notepad++
 - Look for this section. 
 ```javascript
-		// Configuration - Settings
-		let twitchChannel = "MrCoolStreamer";
-		let twitchChatCommand = "!giphy";
-		let defaultImage = "";
-		let giphyApiKey = "api_key_goes_here";
-		let giphyRating = "r";
-		let giphyLang = "en";
-		let giphyLimit = 25;
-		let timeOut = 10;
+// Configuration - Settings
+let twitchChannel = "MrCoolStreamer";
+let twitchChatCommand = "!giphy";
+let defaultImage = "";
+let giphyApiKey = "api_key_goes_here";
+let giphyRating = "r";
+let giphyLang = "en";
+let giphyLimit = 25;
+let timeOut = 10;
 ```
 
 **twitchChannel:** Required. Your Twitch channel name.
@@ -50,4 +50,4 @@ You should now have a API Key that can be used with this project.
 
 Once everything is configured and saved, you can now open giphy.html in your default web browser to test. 
 
-Copy the URL from your browser and add it to OBS as a browser source... example: (file:///home/teklynk/twitch_giphy/giphy.html)
+Copy the URL from your browser to add it to OBS as a browser source... example: (file:///home/teklynk/twitch_giphy/giphy.html)
