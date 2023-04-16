@@ -43,7 +43,6 @@
 		let giphyApiKey = "api_key_goes_here";
 		let giphyRating = "r";
 		let giphyLang = "en";
-		let giphyLimit = 25;
 		let timeOut = 10;
 
 		if (!defaultImage) {
@@ -62,17 +61,17 @@
 			if (timeOut > 0) {
 				if ($('#giphy_div').hasClass('active')) return;
 			}
-
-			// generate a randmon number between 0 and the giphyLimit
-			let rndNum = Math.random() * giphyLimit;
-
+			
 			// Giphy API search query
 			let giphyApiResponse = JSON.parse($.getJSON({
-				'url': "https://api.giphy.com/v1/gifs/search?api_key=" + giphyApiKey + "&q=" + encodeURIComponent(searchTerm) + "&limit=" + giphyLimit + "&offset=0&rating=" + giphyRating + "&lang=" + giphyLang,
+				'url': "https://api.giphy.com/v1/gifs/search?api_key=" + giphyApiKey + "&q=" + encodeURIComponent(searchTerm) + "&limit=25&offset=0&rating=" + giphyRating + "&lang=" + giphyLang,
 				'async': false
 			}).responseText);
 
-			// replace image source with a random giphy image
+			// generate a randmon number between 0 and total item count from search results
+			let rndNum = Math.random() * giphyApiResponse.pagination.count;
+
+			// replace image source with a random giphy image from the search results
 			$('#giphy_div').css('background-image', 'url(' + giphyApiResponse.data[parseInt(rndNum)].images.original.url + ')');
 			$('#giphy_div').addClass('active');
 
@@ -93,7 +92,6 @@
 
 			return true;
 		}
-
 
 		// TMIjs Twitch chat connection
 		const client = new tmi.Client({

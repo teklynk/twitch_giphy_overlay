@@ -30,7 +30,6 @@ let defaultImage = "";
 let giphyApiKey = "api_key_goes_here";
 let giphyRating = "r";
 let giphyLang = "en";
-let giphyLimit = 25;
 let timeOut = 10;
 ```
 
@@ -43,8 +42,6 @@ let timeOut = 10;
 **giphyApiKey:** Required. You Giphy API key that you generated from https://developers.giphy.com/dashboard/
 
 **giphyRating:** Giphy offers some ratings to filter images. (g, pg, pg-13, r).
-
-**giphyLimit:** The number of images to randomly pick from. Max is 25 images.
 
 **timeOut:** How long should the image stay on screen. Set this to 0 if you want to image to stay on screen until another image is played.
 
